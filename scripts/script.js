@@ -10,24 +10,7 @@ function handleFile(file) {
     reader.readAsDataURL(file);
     reader.onloadend = function() {
         button.disabled = true;
-        let canvas = document.createElement("canvas");
-            let ctx = canvas.getContext("2d");
-            let img = new Image();
-            img.src = reader.result;
-            img.onload = function() {
-                let width = img.width;
-                let height = img.height;
-                if (height > 400) {
-                    width = width * (500 / height);
-                    height = 400;
-                }
-                canvas.width = width;
-                canvas.height = height;
-                ctx.drawImage(img, 0, 0, width, height);
-                image.src = canvas.toDataURL();
-            }
-            image.style.width = "100%";
-            image.style.height = "auto";
+        image.src = reader.result;
         let data = {"data": reader.result}
         fetch(`/upload/${file.name}`, {method: "POST", body: JSON.stringify(data)})
         .then(response => response.json())
